@@ -9,7 +9,10 @@ namespace WebApplication19.Controllers
     [Route("[controller]")]
     public class ApplesController : ControllerBase
     {
-        private static List<Apple> apples = new List<Apple>() { new Apple{ Id = 1, Color = "White" }, new Apple { Id = 2, Color = "Red" } };
+        private static readonly List<Apple> apples = new List<Apple>() { 
+            new Apple{ Id = 1, Color = "White" }, 
+            new Apple { Id = 2, Color = "Red" } 
+            };
 
         [HttpGet]
         public IEnumerable<Apple> Get()
