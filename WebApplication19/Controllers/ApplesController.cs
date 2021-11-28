@@ -6,42 +6,38 @@ using WebApplication19.Models;
 namespace WebApplication19.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Person/{personId}/[controller]")]
     public class ApplesController : ControllerBase
     {
-        private static readonly List<Apple> apples = new List<Apple>() { 
-            new Apple{ Id = 1, Color = "White" }, 
-            new Apple { Id = 2, Color = "Red" } 
-            };
-
-        [HttpGet]
-        public IEnumerable<Apple> Get()
+        [HttpGet()]
+        public IEnumerable<Apple> Get([FromRoute] int personId)
         {
-            return apples;
+            return StaticData.Persons.FirstOrDefault(x => x.Id == personId).Apples;
         }
 
         [HttpGet("{id}")]
-        public Apple Get([FromRoute] int id)
+        public Apple Get([FromRoute] int personId, [FromRoute] int id)
         {
-            return apples.FirstOrDefault(x => x.Id == id);
+            return StaticData.Persons.FirstOrDefault(x => x.Id == personId).Apples.FirstOrDefault(x => x.Id == id);
         }
 
         [HttpPost]
-        public void Post([FromBody] Apple value)
+        public void Post([FromRoute] int personId, [FromBody] Apple value)
         {
-            apples.Add(value);
+            StaticData.Persons.FirstOrDefault(x => x.Id == personId).Apples.Add(value);
         }
 
         [HttpPut("{id}")]
-        public void Put([FromRoute] int id, [FromBody] Apple value)
+        public void Put([FromRoute] int personId, [FromRoute] int id, [FromBody] Apple value)
         {
-            var apple = apples.FirstOrDefault(x => x.Id == id);
+            var apple = StaticData.Persons.FirstOrDefault(x => x.Id == personId).Apples.FirstOrDefault(x => x.Id == id);
             apple.Color = value.Color;
         }
 
         [HttpDelete("{id}")]
-        public void Delete([FromRoute] int id)
+        public void Delete([FromRoute] int personId, [FromRoute] int id)
         {
+            var apples = StaticData.Persons.FirstOrDefault(x => x.Id == personId).Apples;
             apples.Remove(apples.FirstOrDefault(x => x.Id == id));
         }
     }
